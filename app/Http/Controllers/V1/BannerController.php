@@ -3,18 +3,25 @@
 namespace App\Http\Controllers\V1;
 
 use App\Http\Controllers\Controller;
+use App\Validator\BannerValidator;
 
 class BannerController extends Controller
 {
+    private $bannerValidator;
+    /**
+     * BannerController constructor.
+     */
+    public function __construct(BannerValidator $bannerValidator)
+    {
+        $this->bannerValidator = $bannerValidator;
+    }
+
+    /**
+     * 根据id 获取banner
+     * @param $id
+     */
     public function getBanner($id)
     {
-        $validator = \Validator::make(['id' => $id], [
-            'id' => 'required|numeric|min:1|max:10',
-        ]);
-
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            dd($errors->first('id'));
-        }
+        $this->bannerValidator->IdMustBePostiveInt($id);
     }
 }
