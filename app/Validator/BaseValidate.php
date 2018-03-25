@@ -8,8 +8,9 @@ use App\Rules\IDMustBePostiveInt;
 class BaseValidate
 {
     /**
-     * 验证id为正整数
+     * 验证id 必须是正整数
      * @param $id
+     * @return bool|\Illuminate\Http\JsonResponse
      */
     public function IdMustBePostiveInt($id)
     {
@@ -19,7 +20,12 @@ class BaseValidate
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            dd($errors->get('id'));
+            return response()->json([
+                'error_code' => 204,
+                'message' => $errors->first('id')
+            ]);
+        }else{
+            return true;
         }
     }
 }

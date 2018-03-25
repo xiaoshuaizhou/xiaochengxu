@@ -22,6 +22,7 @@ class BannerController extends Controller
      */
     public function getBanner($id)
     {
-        $this->bannerValidator->IdMustBePostiveInt($id);
+        $res = $this->bannerValidator->IdMustBePostiveInt($id);
+        if ($res !== true) return $res;
     }
 }
