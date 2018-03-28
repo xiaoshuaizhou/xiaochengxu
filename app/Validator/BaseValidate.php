@@ -3,6 +3,7 @@
 namespace App\Validator;
 
 
+use App\Exceptions\IDMustBePostException;
 use App\Rules\IDMustBePostiveInt;
 
 class BaseValidate
@@ -10,7 +11,8 @@ class BaseValidate
     /**
      * 验证id 必须是正整数
      * @param $id
-     * @return bool|\Illuminate\Http\JsonResponse
+     * @return bool
+     * @throws \App\Exceptions\IDMustBePostException
      */
     public function IdMustBePostiveInt($id)
     {
@@ -20,10 +22,7 @@ class BaseValidate
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return response()->json([
-                'error_code' => 204,
-                'message' => $errors->first('id')
-            ]);
+            throw new IDMustBePostException($errors->first('id'));
         }else{
             return true;
         }
