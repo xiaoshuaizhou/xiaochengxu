@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -13,7 +14,7 @@ class Handler extends ExceptionHandler
      * @var array
      */
     protected $dontReport = [
-        //
+        ModelNotFoundException::class,
     ];
 
     /**
@@ -60,23 +61,24 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function handle($request, Exception $e){
-        // 只处理自定义的APIException异常
-        if($e instanceof ApiException) {
-            $result = [
-                "msg"    => $e->getMessage(),
-                "data"   => [],
-                "error_code" => 0
-            ];
-            return response()->json($result, 400);
-        }
+
         //id必须是正整数
         if($e instanceof IDMustBePostException) {
             $result = [
-                "msg"    => $e->getMessage(),
+                "msg"    => empty($e->getMessage()) ? 'ID必须是正整数' : $e->getMessage() ,
                 "data"   => [],
                 "error_code" => 10001
             ];
             return response()->json($result, 400);
+        }
+        // banner 不存在
+        if($e instanceof ModelNotFoundException) {
+            $result = [
+                "msg"    => empty($e->getMessage()) ? '请求的Banner不存在' : $e->getMessage(),
+                "data"   => [],
+                "error_code" => 40000
+            ];
+            return response()->json($result, 404);
         }
         return parent::render($request, $e);
     }
