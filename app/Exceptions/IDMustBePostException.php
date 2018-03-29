@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Exceptions;
+
 use Exception;
 
 /**
@@ -10,9 +11,18 @@ use Exception;
  */
 class IDMustBePostException extends Exception
 {
-    public $code = 999;
+    /**
+     * @var int
+     */
+    public $code = 400;
+    /**
+     * @var string
+     */
     public $message = 'id必须是正整数';
-    public $error_code = 400;
+    /**
+     * @var int
+     */
+    public $error_code = 10000;
 
     /**
      * IDMustBePostException constructor.

@@ -15,6 +15,7 @@ class Handler extends ExceptionHandler
      */
     protected $dontReport = [
         ModelNotFoundException::class,
+        IDMustBePostException::class
     ];
 
     /**
@@ -61,15 +62,14 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function handle($request, Exception $e){
-
         //id必须是正整数
         if($e instanceof IDMustBePostException) {
             $result = [
-                "msg"    => empty($e->getMessage()) ? 'ID必须是正整数' : $e->getMessage() ,
+                "msg"    => empty($e->getMessage()) ? $e->message : $e->getMessage() ,
                 "data"   => [],
-                "error_code" => 10001
+                "error_code" => $e->error_code
             ];
-            return response()->json($result, 400);
+            return response()->json($result, $e->code);
         }
         // banner 不存在
         if($e instanceof ModelNotFoundException) {
@@ -80,6 +80,7 @@ class Handler extends ExceptionHandler
             ];
             return response()->json($result, 404);
         }
+
         return parent::render($request, $e);
     }
 }
