@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use Faker\Provider\Image;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BannerItemResource extends JsonResource
@@ -16,10 +15,13 @@ class BannerItemResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
             'img_id' => $this->img_id,
             'key_word' => $this->key_word,
-            'img' => ['url' => $this->image->url]
+            'type' => $this->type,
+            'img' => [
+                'url' =>  $this->image->url,
+                'form' => $this->image->from,
+            ],
         ];
     }
 }

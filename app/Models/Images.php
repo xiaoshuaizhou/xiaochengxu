@@ -26,4 +26,17 @@ class Images extends Model
      */
     protected $table = 'images';
 
+    /**
+     * 定义访问器控制 image 的 URL
+     * @param $value
+     * @return string
+     */
+    public function getUrlAttribute($value)
+    {
+        if ($this->from == 1) {
+            return env('IMG_PREFIX') . $value;
+        } else {
+            return $value;
+        }
+    }
 }
