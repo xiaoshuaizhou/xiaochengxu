@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * App\Models\BannerItems
  *
@@ -22,8 +20,10 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BannerItems whereType($value)
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\BannerItems whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @property-read string $url
+ * @property-read \App\Models\Images $image
  */
-class BannerItems extends Model
+class BannerItems extends BaseModel
 {
     /**
      * @var string

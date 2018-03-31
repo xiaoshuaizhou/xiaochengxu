@@ -2,8 +2,6 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
 /**
  * App\Models\Images
  *
@@ -19,7 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Images whereUrl($value)
  * @mixin \Eloquent
  */
-class Images extends Model
+class Images extends BaseModel
 {
     /**
      * @var string
@@ -27,16 +25,12 @@ class Images extends Model
     protected $table = 'images';
 
     /**
-     * 定义访问器控制 image 的 URL
+     * 重写父级的读取器，只用于image模型
      * @param $value
      * @return string
      */
     public function getUrlAttribute($value)
     {
-        if ($this->from == 1) {
-            return env('IMG_PREFIX') . $value;
-        } else {
-            return $value;
-        }
+        return $this->prefixImageUrl($value);
     }
 }
