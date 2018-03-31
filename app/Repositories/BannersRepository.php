@@ -8,6 +8,9 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class BannersRepository
 {
+    /**
+     * @var Banner
+     */
     public $bannerModel;
 
     /**
@@ -27,9 +30,9 @@ class BannersRepository
     public function getBannerById($id)
     {
         try{
-            $res = new BannerResource($this->bannerModel->findOrFail($id));
+            $res = new BannerResource($this->bannerModel::with(['bannerItems', 'bannerItems.image'])->findOrFail($id));
         }catch (ModelNotFoundException $exception){
-            throw new ModelNotFoundException();
+            throw new ModelNotFoundException('请求的Banner不存在');
         }
 
         return $res;
