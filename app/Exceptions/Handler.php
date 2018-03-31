@@ -4,6 +4,7 @@ namespace App\Exceptions;
 
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -77,6 +78,15 @@ class Handler extends ExceptionHandler
                 "msg"    => empty($e->getMessage()) ? '请求的Banner不存在' : $e->getMessage(),
                 "data"   => [],
                 "error_code" => 40000
+            ];
+            return response()->json($result, 404);
+        }
+        //自定义URL错误异常
+        if($e instanceof HttpException) {
+            $result = [
+                "msg"    => '访问的URL不存在',
+                "data"   => [],
+                "error_code" => 999
             ];
             return response()->json($result, 404);
         }
