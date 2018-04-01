@@ -23,6 +23,10 @@ class Images extends BaseModel
      * @var string
      */
     protected $table = 'images';
+    /**
+     * @var array
+     */
+    protected $hidden = ['id', 'from' , 'created_at', 'updated_at'];
 
     /**
      * 重写父级的读取器，只用于image模型

@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers\V1;
 
+use App\Http\Controllers\Controller;
 use App\Repositories\ThemesRepository;
 use App\Validator\ThemeValidator;
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 
 class ThemeController extends Controller
 {
@@ -25,14 +24,29 @@ class ThemeController extends Controller
     }
 
     /**
+     * 主题列表简要信息
      * $url /theme?ids=id1,id2
-     * @throws \App\Exceptions\CheckIdsException
+     * @throws \App\Exceptions\IDMustBePostException
      */
     public function getSimpleList()
     {
         $ids = request()->only('ids');
-
         $res = $this->themeValidator->checkIDs($ids['ids']);
+        if ($res !== true) return $res;
 
+        return $this->themeRepository->getSimpleList($ids);
+    }
+
+    /**
+     * @param $id
+     * @return \App\Http\Resources\ThemeCollection|bool
+     * @throws \App\Exceptions\IDMustBePostException
+     */
+    public function getComplexOne($id)
+    {
+        $res = $this->themeValidator->IdMustBePostiveInt($id);
+        if ($res !== true) return $res;
+
+        return $this->themeRepository->getComplexOne($id);
     }
 }

@@ -72,7 +72,7 @@ class Handler extends ExceptionHandler
             ];
             return response()->json($result, $e->code);
         }
-        // banner 不存在
+        // model 不存在
         if($e instanceof ModelNotFoundException) {
             $result = [
                 "msg"    => empty($e->getMessage()) ? '请求的数据不存在' : $e->getMessage(),
