@@ -20,4 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 //版本号控制
 Route::prefix('v1')->group(function () {
     Route::get('/banner/{id}', 'V1\BannerController@getBanner');
+    Route::get('/theme', 'V1\ThemeController@getSimpleList');
 });

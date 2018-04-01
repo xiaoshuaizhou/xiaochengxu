@@ -101,8 +101,8 @@ return [
     */
 
     'custom' => [
-        'attribute-name' => [
-            'rule-name' => 'custom-message',
+        'ids' => [
+            'required' => 'ids参数不能为空',
         ],
     ],
 

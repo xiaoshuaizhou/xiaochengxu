@@ -41,9 +41,9 @@ theme.php
 为撒？
 >>在设计表结构时，两个有一对一关系的模型中，一个表中会设计外键，而另一表中不会设计外键，需要用 `hasOne` 和 `belognsTo` 来区分    
 本项目中 `theme` 表中有 `topic_img_id` 对应 `image` 表中的 `id`; 而 `image` 表中没有定义外键，类似于 `theme_id` 的字段；
-从这点来说，这一对一的关系是不能互换，不对等的；
-![theme表](https://upload-images.jianshu.io/upload_images/7303277-b929c9dc91264a85.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-![image表](https://upload-images.jianshu.io/upload_images/7303277-f81dcf6320247f75.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+从这点来说，这一对一的关系是不能互换，不对等的；   
+theme 表![theme表](https://upload-images.jianshu.io/upload_images/7303277-b929c9dc91264a85.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+image 表![image表](https://upload-images.jianshu.io/upload_images/7303277-f81dcf6320247f75.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ```php
 theme.php

@@ -63,7 +63,7 @@ class Handler extends ExceptionHandler
      * @return \Illuminate\Http\JsonResponse|\Symfony\Component\HttpFoundation\Response
      */
     public function handle($request, Exception $e){
-        //id必须是正整数
+        //id(ids)必须是正整数
         if($e instanceof IDMustBePostException) {
             $result = [
                 "msg"    => empty($e->getMessage()) ? $e->message : $e->getMessage() ,
