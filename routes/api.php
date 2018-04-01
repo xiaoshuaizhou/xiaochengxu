@@ -23,5 +23,6 @@ Route::prefix('v1')->group(function () {
     Route::get('/theme', 'V1\ThemeController@getSimpleList');
     Route::get('/theme/{id}', 'V1\ThemeController@getComplexOne');
     Route::get('/product/recent', 'V1\ProductController@getRecent');
+    Route::get('/product/by_category', 'V1\ProductController@getAllByCategoryId');
     Route::get('/category/all', 'V1\CategoryController@getAllCat');
 });

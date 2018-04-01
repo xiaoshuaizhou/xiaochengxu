@@ -43,4 +43,20 @@ class ProductsRepository
 
         return $res;
     }
+
+    /**
+     * 根据category_id 查找商品
+     * @param $id
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
+     */
+    public function getAllProductByCategoryId($id)
+    {
+        $res = ProductResource::collection($this->productModel->where('category_id', $id)->limit(15)->get());
+
+        if ($res->isEmpty()){
+            throw new ModelNotFoundException('商品不存在');
+        }
+
+        return $res;
+    }
 }

@@ -47,4 +47,15 @@ class ProductController extends Controller
         return $this->productRepository->getRecent($count);
     }
 
+    /**
+     * @throws \App\Exceptions\IDMustBePostException
+     */
+    public function getAllByCategoryId()
+    {
+        $id = request()->input('id');
+        $this->productValidator->IdMustBePostiveInt($id);
+
+        return $this->productRepository->getAllProductByCategoryId($id);
+    }
+
 }
