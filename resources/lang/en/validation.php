@@ -97,12 +97,15 @@ return [
     | Here you may specify custom validation messages for attributes using the
     | convention "attribute.rule" to name the lines. This makes it quick to
     | specify a specific custom language line for a given attribute rule.
-    |
+    | count
     */
 
     'custom' => [
         'ids' => [
             'required' => 'ids参数不能为空',
+        ],
+        'count' => [
+            'between' => 'count必须在1到15之间',
         ],
     ],
 

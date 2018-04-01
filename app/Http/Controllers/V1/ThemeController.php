@@ -31,21 +31,19 @@ class ThemeController extends Controller
     public function getSimpleList()
     {
         $ids = request()->only('ids');
-        $res = $this->themeValidator->checkIDs($ids['ids']);
-        if ($res !== true) return $res;
+        $this->themeValidator->checkIDs($ids['ids']);
 
         return $this->themeRepository->getSimpleList($ids);
     }
 
     /**
      * @param $id
-     * @return \App\Http\Resources\ThemeCollection|bool
+     * @return \App\Http\Resources\ThemeResource
      * @throws \App\Exceptions\IDMustBePostException
      */
     public function getComplexOne($id)
     {
-        $res = $this->themeValidator->IdMustBePostiveInt($id);
-        if ($res !== true) return $res;
+        $this->themeValidator->IdMustBePostiveInt($id);
 
         return $this->themeRepository->getComplexOne($id);
     }

@@ -13,16 +13,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-Route::get('img', function (){
-    return \App\Models\Product::with('image')->find(1);
-});
+//Route::middleware('auth:api')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 //版本号控制
 Route::prefix('v1')->group(function () {
     Route::get('/banner/{id}', 'V1\BannerController@getBanner');
     Route::get('/theme', 'V1\ThemeController@getSimpleList');
     Route::get('/theme/{id}', 'V1\ThemeController@getComplexOne');
+    Route::get('/product/recent', 'V1\ProductController@getRecent');
 });
