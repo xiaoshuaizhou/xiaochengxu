@@ -6,12 +6,25 @@ use App\Http\Controllers\Controller;
 use App\Repositories\BannersRepository;
 use App\Validator\BannerValidator;
 
+/**
+ * Class BannerController
+ * @package App\Http\Controllers\V1
+ */
 class BannerController extends Controller
 {
+    /**
+     * @var BannerValidator
+     */
     private $bannerValidator;
+    /**
+     * @var BannersRepository
+     */
     private $bannerRepository;
+
     /**
      * BannerController constructor.
+     * @param BannerValidator $bannerValidator
+     * @param BannersRepository $bannersRepository
      */
     public function __construct(
         BannerValidator $bannerValidator,

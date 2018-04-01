@@ -6,14 +6,25 @@ use App\Http\Controllers\Controller;
 use App\Repositories\ProductsRepository;
 use App\Validator\ProductValidator;
 
+/**
+ * Class ProductController
+ * @package App\Http\Controllers\V1
+ */
 class ProductController extends Controller
 {
+    /**
+     * @var ProductsRepository
+     */
     public $productRepository;
+    /**
+     * @var ProductValidator
+     */
     public $productValidator;
 
     /**
      * ProductController constructor.
-     * @param $productRepository
+     * @param ProductsRepository $productRepository
+     * @param ProductValidator $productValidator
      */
     public function __construct(
         ProductsRepository $productRepository ,
@@ -25,7 +36,7 @@ class ProductController extends Controller
 
     /**
      * @param int $count
-     * @return \Illuminate\Support\Collection
+     * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      * @throws \App\Exceptions\IDMustBePostException
      */
     public function getRecent($count = 15)

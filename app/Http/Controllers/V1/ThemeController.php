@@ -6,14 +6,26 @@ use App\Http\Controllers\Controller;
 use App\Repositories\ThemesRepository;
 use App\Validator\ThemeValidator;
 
+/**
+ * Class ThemeController
+ * @package App\Http\Controllers\V1
+ */
 class ThemeController extends Controller
 {
+    /**
+     * @var ThemesRepository
+     */
     public $themeRepository;
 
+    /**
+     * @var ThemeValidator
+     */
     protected $themeValidator;
+
     /**
      * ThemeController constructor.
-     * @param $themeRepository
+     * @param ThemesRepository $themeRepository
+     * @param ThemeValidator $themeValidator
      */
     public function __construct(
         ThemesRepository $themeRepository,
