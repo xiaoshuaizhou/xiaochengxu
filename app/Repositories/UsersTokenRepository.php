@@ -43,9 +43,25 @@ class UsersTokenRepository
         $this->wxLoginUrl = sprintf(env('WXLOGINURL'), $this->wxAppId, $this->wxAppsecret, $this->code['code']);
     }
 
-    public function getToken($code)
+    /**
+     * @return mixed
+     * @throws \Exception
+     */
+    public function getToken()
     {
+        $resoult = curl_get($this->wxLoginUrl);
 
+        $wxResult = json_decode($resoult, true);
+        if (empty($wxResult)){
+            throw new \Exception('获取session_key及openid时异常，微信内部错误');
+        }else{
+            $LoginFail = array_key_exists('errcode', $wxResult);
+            if ($LoginFail){
+                //TODO 获取失败
+            }else{
+                return $wxResult;
+            }
+        }
     }
 
 

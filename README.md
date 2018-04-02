@@ -69,3 +69,22 @@ theme.php
 ![微信身份认证体系](https://upload-images.jianshu.io/upload_images/7303277-907866ae015ed581.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 客户端访问接口流程图       
 ![客户端访问下单接口流程](https://upload-images.jianshu.io/upload_images/7303277-1309d1809d59e8d0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+#### 自定义 `helper` 函数
+1. 在 `app` 目录下新建一个 `Support` 目录【自定义名称】, 然后在该目录下新建 `helpers.php` 文件；
+2. 在根目录下 `composer.json` 中的 `autoload` 选项中添加 `files` json对象，对应 `步骤1` 新建的 `helpers.php` 注意命名空间 ，下面示例
+```php
+"autoload": {
+        "files":[
+            "app/Support/helpers.php"
+        ],
+        "classmap": [
+            "database/seeds",
+            "database/factories"
+        ],
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+```
+**注意：这里注意遵循 `prs-4` 命名空间规范；**
+3. 命令行模式下执行 `composer dump-autoload` 命令，用于重新加载 `composer.json` 文件；
