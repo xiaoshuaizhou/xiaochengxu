@@ -42,8 +42,10 @@ theme.php
 >>在设计表结构时，两个有一对一关系的模型中，一个表中会设计外键，而另一表中不会设计外键，需要用 `hasOne` 和 `belognsTo` 来区分    
 本项目中 `theme` 表中有 `topic_img_id` 对应 `image` 表中的 `id`; 而 `image` 表中没有定义外键，类似于 `theme_id` 的字段；
 从这点来说，这一对一的关系是不能互换，不对等的；   
-theme 表![theme表](https://upload-images.jianshu.io/upload_images/7303277-b929c9dc91264a85.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
-image 表![image表](https://upload-images.jianshu.io/upload_images/7303277-f81dcf6320247f75.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+theme 表     
+![theme表](https://upload-images.jianshu.io/upload_images/7303277-b929c9dc91264a85.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+image 表     
+![image表](https://upload-images.jianshu.io/upload_images/7303277-f81dcf6320247f75.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 ```php
 theme.php
@@ -59,3 +61,11 @@ theme.php
 * 总结：
 1. 一对一关系中，一对一的关系模型定义在 `调用的主动方` 模型中，上述中的 `theme` 模型；
 2. 一对一关系中，在有外键的模型中 使用 `belongsTo` ； 没有外键的模型 使用 `hasOne`;
+
+
+***
+#### 微信认证体系（token）       
+身份认证流程图：
+![微信身份认证体系](https://upload-images.jianshu.io/upload_images/7303277-907866ae015ed581.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+客户端访问接口流程图       
+![客户端访问下单接口流程](https://upload-images.jianshu.io/upload_images/7303277-1309d1809d59e8d0.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)

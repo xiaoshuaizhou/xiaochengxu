@@ -25,4 +25,5 @@ Route::prefix('v1')->group(function () {
     Route::get('/product/recent', 'V1\ProductController@getRecent');
     Route::get('/product/by_category', 'V1\ProductController@getAllByCategoryId');
     Route::get('/category/all', 'V1\CategoryController@getAllCat');
+    Route::post('/token/user', 'V1\TokenController@getToken');
 });

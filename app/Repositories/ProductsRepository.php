@@ -54,7 +54,7 @@ class ProductsRepository
         $res = ProductResource::collection($this->productModel->where('category_id', $id)->limit(15)->get());
 
         if ($res->isEmpty()){
-            throw new ModelNotFoundException('商品不存在');
+            throw new ModelNotFoundException('分类不存在或者该分类下无商品');
         }
 
         return $res;
