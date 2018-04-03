@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Exceptions\WeChatException;
 use App\Models\User;
 
 /**
@@ -40,11 +41,12 @@ class UsersTokenRepository
         $this->code = $code;
         $this->wxAppId = env('APPID');
         $this->wxAppsecret = env('APPSECRET');
-        $this->wxLoginUrl = sprintf(env('WXLOGINURL'), $this->wxAppId, $this->wxAppsecret, $this->code['code']);
+        $this->wxLoginUrl = sprintf(env('WXLOGINURL'), $this->wxAppId, $this->wxAppsecret, $this->code);
     }
 
     /**
      * @return mixed
+     * @throws WeChatException
      * @throws \Exception
      */
     public function getToken()
@@ -57,13 +59,48 @@ class UsersTokenRepository
         }else{
             $LoginFail = array_key_exists('errcode', $wxResult);
             if ($LoginFail){
-                //TODO 获取失败
+                $this->processLoginError($wxResult);
             }else{
-                return $wxResult;
+                $this->grantToken($wxResult);
             }
         }
     }
 
+    /**
+     * @param $wxResoult
+     * @throws WeChatException
+     */
+    protected function processLoginError($wxResoult)
+    {
+        throw new WeChatException($wxResoult['errmsg'], $wxResoult['errcode']);
+    }
+
+    /**
+     * 颁发令牌
+        //拿到openID
+        //查询数据库，这个openID是否存在
+        //如果存在不处理，如果没有存在新增一条User数据
+        //生成令牌，准备缓存数据，写入缓存
+        //返回令牌到客户端
+     * @param $wxResult
+     */
+    private function grantToken($wxResult)
+    {
+        $openid = $wxResult['openid'];
+        $user = UsersRepository::getUserByOpenId($openid);
+        if ($user){
+            $uid = $user->id;
+        }else{
+            $uid = $this->newUser($openid);
+        }
+    }
+
+    private function newUser($openid)
+    {
+        $user = UsersRepository::create($openid);
+
+        return $user->id;
+    }
 
 
 }

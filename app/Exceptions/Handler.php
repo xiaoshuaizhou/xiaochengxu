@@ -81,6 +81,15 @@ class Handler extends ExceptionHandler
             ];
             return response()->json($result, $e->code);
         }
+        //WeCaht 异常
+        if($e instanceof WeChatException) {
+            $result = [
+                "msg"    => empty($e->getMessage()) ? $e->message : $e->getMessage() ,
+                "data"   => [],
+                "error_code" => $e->error_code
+            ];
+            return response()->json($result, $e->code);
+        }
         // model 不存在
         if($e instanceof ModelNotFoundException) {
             $result = [
