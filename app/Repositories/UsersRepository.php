@@ -21,14 +21,15 @@ class UsersRepository
     }
 
     /**
-     * @param $data
-     * @return UsersRepository|\Illuminate\Database\Eloquent\Model|null|object
+     * @param $openid
+     * @return int|mixed
      */
     public static function create($openid)
     {
         $user = User::create([
             'openid' => $openid,
-            'nickname' => '',
+            'name' => 'monkey',
+            'nickname' => 'monkeyzhou',
             'email' => 'laravel@outlook.com',
             'password' => bcrypt('password'),
         ]);
