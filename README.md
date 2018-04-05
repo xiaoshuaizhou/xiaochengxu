@@ -88,3 +88,14 @@ theme.php
 ```
 **注意：这里注意遵循 `prs-4` 命名空间规范；**
 3. 命令行模式下执行 `composer dump-autoload` 命令，用于重新加载 `composer.json` 文件；
+
+***
+##### 缓存的使用 `Redis`:
+* 安装： 使用命令安装扩展包 `composer require predis/predis`
+**注意**
+##### 安装时遇到下面错误 ` Command "optimize" is not defined.`
+`debug`:
+`Laravel5.6` 文档中：
+>先前弃用的optimizeArtisan命令已被删除。随着PHP本身（包括OPcache）的最新改进，该 optimize命令不再提供任何相关的性能优势。因此，您可以php artisan optimize从scripts 您的composer.json文件中删除 。
+
+将 `php artisan optimize` 删除就行了

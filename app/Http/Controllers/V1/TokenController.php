@@ -20,8 +20,10 @@ class TokenController extends Controller
     }
 
     /**
-     * @param $code 客户端传递的code
-     * @return mixed
+     * $code 客户端传递的code
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \App\Exceptions\TokenException
+     * @throws \App\Exceptions\WeChatException
      * @throws \Exception
      */
     public function getToken()
@@ -30,6 +32,8 @@ class TokenController extends Controller
         $this->tokenValidator->checkToken($code);
         $userToken = new UsersTokenRepository($code);
 
-        return $userToken->getToken($code);
+        return response()->json([
+            'token' =>$userToken->getToken($code)
+        ]);
     }
 }
