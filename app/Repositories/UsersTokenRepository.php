@@ -91,13 +91,23 @@ class UsersTokenRepository
         if ($user){
             $uid = $user->id;
         }else{
-            $uid = $this->newUser($openid);
+            $uid = $this->newUser($openid,$wxResult);
         }
     }
 
-    private function newUser($openid)
+    /**
+     * @param $openid
+     * @param $wxResult
+     * @return mixed
+     * @throws WeChatException
+     */
+    private function newUser($openid, $wxResult)
     {
-        $user = UsersRepository::create($openid);
+        try{
+            $user = UsersRepository::create($openid);
+        }catch (\Exception $e){
+            throw new WeChatException($wxResult['errmsg'],$wxResoult['errcode']);
+        }
 
         return $user->id;
     }

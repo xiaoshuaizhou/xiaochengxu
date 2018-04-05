@@ -86,9 +86,9 @@ class Handler extends ExceptionHandler
             $result = [
                 "msg"    => empty($e->getMessage()) ? $e->message : $e->getMessage() ,
                 "data"   => [],
-                "error_code" => $e->error_code
+                "error_code" => $e->code
             ];
-            return response()->json($result, $e->code);
+            return response()->json($result, $e->error_code);
         }
         // model 不存在
         if($e instanceof ModelNotFoundException) {

@@ -29,7 +29,7 @@ class UsersRepository
         $user = User::create([
             'openid' => $openid,
             'name' => 'monkey',
-            'nickname' => 'monkeyzhou',
+//            'nickname' => 'monkeyzhou',
             'email' => 'laravel@outlook.com',
             'password' => bcrypt('password'),
         ]);

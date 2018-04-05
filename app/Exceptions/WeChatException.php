@@ -18,14 +18,14 @@ class WeChatException extends Exception
     /**
      * @var int
      */
-    public $error_code = 10000;
+    public $error_code = 503;
 
     /**
      * WeChatException constructor.
      * @param string $message
      * @param int $code
      */
-    public function __construct(string $message = "", int $code = 0)
+    public function __construct($message, $code)
     {
         parent::__construct($message, $code);
     }
