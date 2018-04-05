@@ -19,6 +19,7 @@ class CategoryController extends Controller
     }
 
     /**
+     * 获取所有分类列表
      * @return \Illuminate\Http\Resources\Json\AnonymousResourceCollection
      */
     public function getAllCat()

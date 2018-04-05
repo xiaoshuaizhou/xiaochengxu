@@ -48,6 +48,7 @@ class ProductController extends Controller
     }
 
     /**
+     * 根据分类id获取所有该分类下的所有商品
      * @throws \App\Exceptions\IDMustBePostException
      */
     public function getAllByCategoryId()
@@ -56,6 +57,13 @@ class ProductController extends Controller
         $this->productValidator->IdMustBePostiveInt($id);
 
         return $this->productRepository->getAllProductByCategoryId($id);
+    }
+
+    public function getOne($id)
+    {
+        $this->productValidator->IdMustBePostiveInt($id);
+
+        return  $this->productRepository->getProductDetail($id);
     }
 
 }

@@ -2,11 +2,13 @@
 
 namespace App\Repositories;
 
+use App\Http\Resources\ProductProperty;
 use App\Http\Resources\ProductResource;
 use App\Models\Banner;
 use App\Http\Resources\BannerResource;
 use App\Models\Product;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Predis\PredisException;
 
 /**
  * Class ProductsRepository
@@ -55,6 +57,30 @@ class ProductsRepository
 
         if ($res->isEmpty()){
             throw new ModelNotFoundException('分类不存在或者该分类下无商品');
+        }
+
+        return $res;
+    }
+
+    /**
+     * 获取商品详情
+     * @param $id
+     * @return ProductResource
+     */
+    public function getProductDetail($id)
+    {
+        try{
+//            $res = new ProductProperty($this->productModel::with(['productImages.image', 'productProperty'])->find($id));
+            $res = new ProductProperty(
+                $this->productModel->with([
+                    'productImages' => function ($query) {
+                        return $query->with(['image'])->orderBy('order', 'asc');
+                    }])
+                    ->with(['productProperty'])
+                    ->find($id)
+            );
+        }catch (\Exception $exception){
+            throw new ModelNotFoundException('商品不存在');
         }
 
         return $res;

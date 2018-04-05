@@ -99,3 +99,41 @@ theme.php
 >先前弃用的optimizeArtisan命令已被删除。随着PHP本身（包括OPcache）的最新改进，该 optimize命令不再提供任何相关的性能优势。因此，您可以php artisan optimize从scripts 您的composer.json文件中删除 。
 
 将 `php artisan optimize` 删除就行了
+***
+#### 模型嵌套
+* 在 `product` 模型中声明一个和 `productImages` 的一对多的关系 而 `productImages` 模型同时又和 `image` 是一对一的关系；
+* 如果在 `product` 模型查询中关联  `productImages` 查出 `image` 中的字段，此时就要使用 `模型嵌套` 可以在查询中使用 `with(['productImages.image']);`
+示例代码：    
+```php
+public function getProductDetail($id)
+    {
+        try{
+            $res = new ProductProperty($this->productModel::with(['productImages.image', 'productProperty'])->find($id));
+        }catch (\Exception $exception){
+            throw new ModelNotFoundException('商品不存在');
+        }
+
+        return $res;
+    }
+```
+
+* 嵌套查询中的排序：
+```php
+public function getProductDetail($id)
+    {
+        try{
+            $res = new ProductProperty(
+                $this->productModel->with([
+                    'productImages' => function ($query) {
+                        return $query->with(['image'])->orderBy('order', 'asc');
+                    }])
+                    ->with(['productProperty'])
+                    ->find($id)
+            );
+        }catch (\Exception $exception){
+            throw new ModelNotFoundException('商品不存在');
+        }
+
+        return $res;
+    }
+```
