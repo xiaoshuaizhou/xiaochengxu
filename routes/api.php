@@ -27,4 +27,5 @@ Route::prefix('v1')->group(function () {
     Route::get('/product/{id}', 'V1\ProductController@getOne');
     Route::get('/category/all', 'V1\CategoryController@getAllCat');
     Route::post('/token/user', 'V1\TokenController@getToken');
+    Route::post('/address','V1\AddressController@createOrUpdate');
 });

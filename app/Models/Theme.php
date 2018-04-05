@@ -4,11 +4,49 @@ namespace App\Models;
 
 /**
  * Class Theme
+ *
  * @package App\Models
+ * @property int $id
+ * @property string $name
+ * @property string $description
+ * @property int $topic_img_id
+ * @property int $head_img_id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \App\Models\Images $headImage
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
+ * @property-read \App\Models\Images $topicImage
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Theme whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Theme whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Theme whereHeadImgId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Theme whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Theme whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Theme whereTopicImgId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Theme whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 /**
  * Class Theme
+ *
  * @package App\Models
+ * @property int $id
+ * @property string $name
+ * @property string $description
+ * @property int $topic_img_id
+ * @property int $head_img_id
+ * @property \Carbon\Carbon|null $created_at
+ * @property \Carbon\Carbon|null $updated_at
+ * @property-read \App\Models\Images $headImage
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
+ * @property-read \App\Models\Images $topicImage
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Theme whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Theme whereDescription($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Theme whereHeadImgId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Theme whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Theme whereName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Theme whereTopicImgId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\Theme whereUpdatedAt($value)
+ * @mixin \Eloquent
  */
 class Theme extends BaseModel
 {

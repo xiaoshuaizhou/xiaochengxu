@@ -72,6 +72,24 @@ class Handler extends ExceptionHandler
             ];
             return response()->json($result, $e->code);
         }
+        //用户地址
+        if($e instanceof AddressException) {
+            $result = [
+                "msg"    => empty($e->getMessage()) ? $e->message : $e->getMessage() ,
+                "data"   => [],
+                "error_code" => $e->error_code
+            ];
+            return response()->json($result, $e->code);
+        }
+        //用户信息异常
+        if($e instanceof UserException) {
+            $result = [
+                "msg"    => empty($e->getMessage()) ? $e->message : $e->getMessage() ,
+                "data"   => [],
+                "error_code" => $e->error_code
+            ];
+            return response()->json($result, $e->code);
+        }
         //token 异常
         if($e instanceof TokenException) {
             $result = [
