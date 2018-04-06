@@ -180,11 +180,19 @@ public function __construct()
     $this->middleware('primaryScope')->only('createOrUpdate');
 }
 ```
-* 这里注意 `only` 和 `except`
-> `only` : 设置中间件应该应用的控制器方法;
-`except` : 设置中间件应该排除的控制器方法
-
 示例代码中中间件的作用仅对 `createOrUpdate` 方法生效
+
+* 这里注意 `only` 和 `except`
+> `only` : 设置中间件应该应用的控制器方法; 需要作用于多个方法可以使用 数组的形式 []
+`except` : 设置中间件应该排除的控制器方法; 需要作用于多个方法可以使用 数组的形式 []
+```php
+public function __construct()
+{
+    $this->middleware('primaryScope')->only(['create', 'update']);
+}
+```
+
+示例代码中中间件的作用会对 `create` 和 `update` 方法生效;
 ***
 #### 处理订单思路：
 >处理订单思路
