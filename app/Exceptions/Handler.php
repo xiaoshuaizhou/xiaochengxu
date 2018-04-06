@@ -90,8 +90,17 @@ class Handler extends ExceptionHandler
             ];
             return response()->json($result, $e->code);
         }
-        //用户信息异常
+        //商品参数错误异常
         if($e instanceof OrderProducts) {
+            $result = [
+                "msg"    => empty($e->getMessage()) ? $e->message : $e->getMessage() ,
+                "data"   => [],
+                "error_code" => $e->error_code
+            ];
+            return response()->json($result, $e->code);
+        }
+        //订单异常
+        if($e instanceof OrderException) {
             $result = [
                 "msg"    => empty($e->getMessage()) ? $e->message : $e->getMessage() ,
                 "data"   => [],

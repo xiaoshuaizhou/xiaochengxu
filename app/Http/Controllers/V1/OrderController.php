@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\V1;
 
+use App\Repositories\TokenRepository;
 use App\Validator\OrderProductsGetValidator;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -26,5 +27,6 @@ class OrderController extends Controller
     {
         $products = request()->input('products');
         $this->orderValidator->checkProducts($products);
+        $uid = TokenRepository::getCurrentTokenVar('uid');
     }
 }
