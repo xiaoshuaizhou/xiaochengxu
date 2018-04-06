@@ -198,4 +198,4 @@ public function __construct()
 【在调用支付和支付成功之间再次检测库存量，可能会在调用之后缺货】，发生的概率很小。可忽略
 8. 微信会返回一个支付结果，根据微信的返回结果判断是否支付成功。【异步调用】
 9. 如果微信返回支付成功，对库存量进行对应的扣除，如果微信返回支付失败，返回一个支付失败的结果【返回客户端支付成功与否是微信返回的。】
-![订单流程图](https://upload-images.jianshu.io/upload_images/7303277-036906b2bfade821.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+![订单流程图](https://upload-images.jianshu.io/upload_images/7303277-3b337d619ddaa39f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
