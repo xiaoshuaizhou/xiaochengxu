@@ -59,9 +59,6 @@ class TokenRepository
             }else{
                 throw new TokenException('尝试获取token变量不存在');
             }
-
         }
-
-
     }
 }

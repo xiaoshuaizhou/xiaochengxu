@@ -31,5 +31,16 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Address extends Model
 {
+    /**
+     * @var string
+     */
     protected $table = 'user_addresses';
+    /**
+     * @var array
+     */
+    protected $hidden = ['id', 'created_at', 'updated_at'];
+    /**
+     * @var array
+     */
+    protected $fillable = ['user_id', 'name', 'mobile', 'province', 'city', 'country', 'detail'];
 }

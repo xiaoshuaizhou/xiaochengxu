@@ -7,9 +7,10 @@ use Exception;
 class UserException extends Exception
 {
     /**
+     * http 状态码
      * @var int
      */
-    public $code = 60000;
+    public $code = 404;
     /**
      * @var string
      */
@@ -17,15 +18,15 @@ class UserException extends Exception
     /**
      * @var int
      */
-    public $error_code = 404;
+    public $error_code = 60000;
 
     /**
      * WeChatException constructor.
      * @param string $message
      * @param int $code
      */
-    public function __construct($message, $code)
+    public function __construct($message)
     {
-        parent::__construct($message, $code);
+        parent::__construct($message);
     }
 }

@@ -8,6 +8,12 @@ use App\Rules\IsNotEmpty;
 
 class AddressValidator extends BaseValidate
 {
+    /**
+     * 地址信息验证
+     * @param $data
+     * @return bool
+     * @throws AddressException
+     */
     public function checkAddress($data)
     {
         $validator = \Validator::make(
@@ -26,12 +32,23 @@ class AddressValidator extends BaseValidate
                 'city' => ['required', new IsNotEmpty()],
                 'country' => ['required', new IsNotEmpty(),],
                 'detail' => ['required', new IsNotEmpty(),],
-            ]);
+            ],
+            [
+                'name.required' => '名字不能为空',
+                'mobile.required' => '手机号不能为空',
+                'mobile.IsMobile' => '请输入正确的手机号',
+                'province.required' => '省份不能为空',
+                'city.required' => '城市不能为空',
+                'country.required' => '县不能为空',
+                'detail.required' => 'detail不能为空',
+            ]
+        );
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-
-            throw new AddressException($errors->all());
+            foreach ($errors->all() as $error){
+                throw new AddressException($error);
+            }
         } else {
             return true;
         }

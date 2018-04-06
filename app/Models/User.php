@@ -51,4 +51,13 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    /**
+     * 与address模型的一对一关系
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function address()
+    {
+        return $this->hasOne('App\Models\Address', 'user_id', 'id');
+    }
 }
