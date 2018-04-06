@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use App\Enum\ScopeEnum;
 use App\Exceptions\TokenException;
 use App\Exceptions\WeChatException;
 use App\Models\User;
@@ -109,7 +110,7 @@ class UsersTokenRepository extends TokenRepository
 
     /**
      * 拼装缓存 value
-     * @param $wxResult
+     * @param $wxResult  scope 代表是访问权限 16 代表APP用户
      * @param $uid
      * @return mixed
      */
@@ -117,7 +118,7 @@ class UsersTokenRepository extends TokenRepository
     {
         $cachedValue = $wxResult;
         $cachedValue['uid'] = $uid;
-        $cachedValue['scope'] = 16;
+        $cachedValue['scope'] = ScopeEnum::USER;
 
         return $cachedValue;
     }

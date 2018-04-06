@@ -137,3 +137,51 @@ public function getProductDetail($id)
         return $res;
     }
 ```
+***
+#### 权限使用 `rbac` 重构
+***
+使用中间件做权限控制:项目中使用 `scope` 参数来控制访问权限
+* 首先生成访问中间件文件，使用命令 `php artisan make:middleware CheckPrimaryScope`
+* 编写 `App\Http\Middleware\CheckPrimaryScope.php` 中的 `handle` 方法；
+```php
+//CheckPrimaryScope.php 获取缓存中的scope值，进行判断用户的访问权限         
+
+ public function handle($request, Closure $next)
+    {
+        if (TokenRepository::getCurrentTokenVar('scope')){
+            if (TokenRepository::getCurrentTokenVar('scope') >= ScopeEnum::USER){
+                return $next($request);
+            }else{
+                throw new ForbiddenException('暂无访问权限');
+            }
+        }else{
+            throw new TokenException('token无效或已过期');
+        }
+    }
+```
+* 在 `App\Http\Kernel.php` 文件中注册中间件，在 `$routeMiddleware` 属性中加入自定的中间件文件
+```php
+protected $routeMiddleware = [
+        'auth' => \Illuminate\Auth\Middleware\Authenticate::class,
+        'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
+        'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        'cache.headers' => \Illuminate\Http\Middleware\SetCacheHeaders::class,
+        'can' => \Illuminate\Auth\Middleware\Authorize::class,
+        'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
+        'signed' => \Illuminate\Routing\Middleware\ValidateSignature::class,
+        'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+        'primaryScope' => CheckPrimaryScope::class,
+    ];
+```
+* 在需要控制访问权限的控制器中使用 `__construct` 构造函数的 `middleware` 属性中声明就可以使用；
+```php
+public function __construct()
+{
+    $this->middleware('primaryScope')->only('createOrUpdate');
+}
+```
+* 这里注意 `only` 和 `except`
+> `only` : 设置中间件应该应用的控制器方法;
+`except` : 设置中间件应该排除的控制器方法
+
+示例代码中中间件的作用仅对 `createOrUpdate` 方法生效

@@ -90,6 +90,15 @@ class Handler extends ExceptionHandler
             ];
             return response()->json($result, $e->code);
         }
+        //用户访问权限异常
+        if($e instanceof ForbiddenException) {
+            $result = [
+                "msg"    => empty($e->getMessage()) ? $e->message : $e->getMessage() ,
+                "data"   => [],
+                "error_code" => $e->error_code
+            ];
+            return response()->json($result, $e->code);
+        }
         //token 异常
         if($e instanceof TokenException) {
             $result = [

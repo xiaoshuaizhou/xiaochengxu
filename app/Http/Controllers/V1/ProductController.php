@@ -59,6 +59,12 @@ class ProductController extends Controller
         return $this->productRepository->getAllProductByCategoryId($id);
     }
 
+    /**
+     * 根据id获取商品
+     * @param $id
+     * @return \App\Http\Resources\ProductResource
+     * @throws \App\Exceptions\IDMustBePostException
+     */
     public function getOne($id)
     {
         $this->productValidator->IdMustBePostiveInt($id);

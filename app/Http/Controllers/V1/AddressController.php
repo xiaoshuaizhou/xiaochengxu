@@ -14,6 +14,13 @@ use App\Http\Controllers\Controller;
 class AddressController extends Controller
 {
     /**
+     * AddressController constructor.
+     */
+    public function __construct()
+    {
+        $this->middleware('primaryScope')->only('createOrUpdate');
+    }
+    /**
      * 新增或创建地址
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
