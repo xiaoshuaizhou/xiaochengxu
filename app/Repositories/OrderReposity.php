@@ -6,6 +6,7 @@ namespace App\Repositories;
 use App\Exceptions\OrderException;
 use App\Exceptions\UserException;
 use App\Models\Order;
+use App\Models\OrderProduct;
 use App\Models\Product;
 use App\Models\UserAddress;
 
@@ -49,7 +50,8 @@ class OrderReposity
     public function __construct(
         Order $orderModel,
         Product $product
-    ){
+    )
+    {
         $this->orderModel = $orderModel;
         $this->productModel = $product;
     }
@@ -60,10 +62,14 @@ class OrderReposity
      * @param $oProducts
      * @return array
      * @throws OrderException
+     * @throws UserException
+     * @throws \Exception
      */
     public function place($uid, $oProducts)
     {
         $this->oProducts = $oProducts;
+
+
         $this->uid = $uid;
         $this->products = $this->getProductByOrder($this->oProducts);
         $status = $this->getOrderStatus();
@@ -72,10 +78,76 @@ class OrderReposity
             $status['order_id'] = -1;
             return $status;
         }
-        //创建订单
         //生成快照
-        $snap = $this->snapOrder($status);
+        $orderSnap = $this->snapOrder($status);
+        //创建订单
+        $order = $this->createOrder($orderSnap);
+        $order['pass'] = true;
+
+        return $order;
     }
+
+    /**
+     * 创建订单信息
+     * @param $orderSnap
+     * @return array
+     * @throws \Exception
+     */
+    public function createOrder($orderSnap)
+    {
+        $orderNo = self::makeOrderNo();
+        try {
+            \DB::beginTransaction();
+            $this->orderModel->user_id = $this->uid;
+            $this->orderModel->order_no = $orderNo;
+            $this->orderModel->status = 1;
+            $this->orderModel->prepay_id = 1;
+            $this->orderModel->snap_img = $orderSnap['snapImg'];
+            $this->orderModel->snap_name = $orderSnap['snapName'];
+            $this->orderModel->total_count = $orderSnap['totalCount'];
+            $this->orderModel->total_price = $orderSnap['orderPrice'];
+            $this->orderModel->snap_address = $orderSnap['snapAddress'];
+            $this->orderModel->snap_items = json_encode($orderSnap['pStatus']);
+
+            $this->orderModel->save();
+
+            $orderId = $this->orderModel->id;
+            foreach ($this->oProducts as &$oproduct) {
+                $oproduct['order_id'] = $orderId;
+            }
+            $orderProduct = new OrderProduct();
+            $orderProduct->insert($this->oProducts);
+
+            \DB::commit();
+            return ['order_no' => $orderNo, 'order_id' => $orderId, 'created_at' => $this->orderModel->created_at];
+        } catch (\Exception $exception) {
+            \DB::rollBack();
+            throw $exception;
+        }
+    }
+
+    /**
+     * 生成订单号,避免订单号重复
+     * @return string
+     */
+    public static function makeOrderNo()
+    {
+        $yCode = ['A', 'B', 'C', 'D', 'E', 'F', 'G'];
+        $orderSn =
+            $yCode[intval(date('Y') - 2017)]
+            . strtoupper(dechex(date('m')))
+            . date('d')
+            . substr(time(), -5)
+            . substr(microtime(), 2, 5)
+            . sprintf('%02d', rand(0, 99));
+        return $orderSn;
+    }
+
+    /**
+     * 生成快照[历史订单使用]
+     * @param $status
+     * @throws UserException
+     */
     private function snapOrder($status)
     {
         $snap = [
@@ -93,9 +165,10 @@ class OrderReposity
         $snap['snapName'] = $this->products[0]['name'];
         $snap['snapImg'] = $this->products[0]['main_img_url'];
 
-        if (count($this->products) > 1){
+        if (count($this->products) > 1) {
             $snap['snapName'] .= '等';
         }
+        return $snap;
     }
 
     /**
@@ -106,12 +179,13 @@ class OrderReposity
     protected function getUserAddress()
     {
         $userAddress = UserAddress::where('user_id', $this->uid)->first()->toArray();
-        if (empty($userAddress)){
+        if (empty($userAddress)) {
             throw new UserException('用户地址不存在，下单失败');
         }
 
         return $userAddress;
     }
+
     /**
      * 判断订单库存状态 [订单中包含多个 product ，所以要判断每一个 product的库存状态]
      * @return array
@@ -171,9 +245,9 @@ class OrderReposity
 
             $pStatus['id'] = $product['id'];
             $pStatus['count'] = $oCount;                // 数量
-            $pStatus['name'] = $products['name'];         // 商品名称
-            $pStatus['totalPrice'] = $products['price'] * $oCount;   // 该商品的总价
-            $pStatus['haveStock'] = $products['stock'] - $oCount >= 0 ? true : false;
+            $pStatus['name'] = $product['name'];         // 商品名称
+            $pStatus['totalPrice'] = $product['price'] * $oCount;   // 该商品的总价
+            $pStatus['haveStock'] = $product['stock'] - $oCount >= 0 ? true : false;
         }
         return $pStatus;
     }
@@ -186,13 +260,12 @@ class OrderReposity
             array_push($oPIds, $oProduct['product_id']);
         }
         $products = $this->productModel
-            ->whereIn('id', implode('', $oPIds))
+            ->whereIn('id', $oPIds)
             ->get(['id', 'price', 'stock', 'name', 'main_img_url'])
             ->toArray();
 
         return $products;
     }
-
 
 
 }
